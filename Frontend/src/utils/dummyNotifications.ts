@@ -1,0 +1,117 @@
+import { AppNotification } from '../types/notification.types';
+
+export const DUMMY_NOTIFICATIONS_SELLER: AppNotification[] = [
+  {
+    _id: 'notif-seller-1',
+    userId: 'seller-1',
+    type: 'bid_received',
+    title: 'New Recycler Bid Received',
+    message: 'GreenEarth Recyclers placed a top offer of ₹14,250 for your Scrap Lot.',
+    isRead: false,
+    priority: 'high',
+    createdAt: new Date(Date.now() - 1000 * 60 * 18).toISOString(), // 18 mins ago
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    _id: 'notif-seller-2',
+    userId: 'seller-1',
+    type: 'lot_verified',
+    title: 'AI Verification Completed',
+    message: 'Your scrap lot was verified by deep learning model with 94% purity score.',
+    isRead: false,
+    priority: 'medium',
+    createdAt: new Date(Date.now() - 1000 * 60 * 75).toISOString(), // 1.2 hrs ago
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    _id: 'notif-seller-3',
+    userId: 'seller-1',
+    type: 'pickup_scheduled',
+    title: 'Doorstep Pickup Scheduled',
+    message: 'Fleet driver Rajesh Kumar is assigned for collection tomorrow at 10:30 AM.',
+    isRead: false,
+    priority: 'high',
+    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 4).toISOString(), // 4 hrs ago
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    _id: 'notif-seller-4',
+    userId: 'seller-1',
+    type: 'payment_credited',
+    title: 'Payment Credited: ₹8,450',
+    message: 'Digital payout transfer received in your account for Lot #LOT-A892.',
+    isRead: true,
+    priority: 'medium',
+    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), // 1 day ago
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    _id: 'notif-seller-5',
+    userId: 'seller-1',
+    type: 'price_trend',
+    title: 'Market Rate Surge Alert',
+    message: 'Scrap market index for copper and motor windings increased by +7.2% today.',
+    isRead: true,
+    priority: 'low',
+    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 48).toISOString(), // 2 days ago
+    updatedAt: new Date().toISOString(),
+  },
+];
+
+export const DUMMY_NOTIFICATIONS_RECYCLER: AppNotification[] = [
+  {
+    _id: 'notif-recycler-1',
+    userId: 'recycler-1',
+    type: 'new_lot_available',
+    title: 'High-Volume Scrap Available',
+    message: 'New verified lot of 150kg Industrial Electric Motors listed near Sector 62, Noida.',
+    isRead: false,
+    priority: 'high',
+    createdAt: new Date(Date.now() - 1000 * 60 * 25).toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    _id: 'notif-recycler-2',
+    userId: 'recycler-1',
+    type: 'offer_accepted',
+    title: 'Offer Accepted by Seller',
+    message: 'Collector Ramesh accepted your purchase bid of ₹28,000 for E-Waste Lot.',
+    isRead: false,
+    priority: 'high',
+    createdAt: new Date(Date.now() - 1000 * 60 * 110).toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    _id: 'notif-recycler-3',
+    userId: 'recycler-1',
+    type: 'pickup_en_route',
+    title: 'Pickup Ready for Handover',
+    message: 'Pickup fleet vehicle dispatched with digital scale for verified weight check.',
+    isRead: false,
+    priority: 'medium',
+    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 3).toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    _id: 'notif-recycler-4',
+    userId: 'recycler-1',
+    type: 'epr_certificate',
+    title: 'EPR Credit Certificate Generated',
+    message: 'Monthly national recycling EPR audit credit certificate (2.4 Tons) ready for download.',
+    isRead: true,
+    priority: 'medium',
+    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    _id: 'notif-recycler-5',
+    userId: 'recycler-1',
+    type: 'payout_released',
+    title: 'Digital Escrow Payout Released',
+    message: 'Payout of ₹34,200 successfully transferred to seller upon verified weigh-in.',
+    isRead: true,
+    priority: 'low',
+    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 36).toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+];
