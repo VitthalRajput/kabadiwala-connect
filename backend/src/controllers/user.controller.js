@@ -39,13 +39,30 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new ApiError(400, "Full name, phone number, and password are required");
     }
 
+    const trimmedPhone = typeof phoneNumber === 'string' 
+        ? phoneNumber.trim().replace(/\D/g, '').slice(-10) 
+        : String(phoneNumber).trim().replace(/\D/g, '').slice(-10);
+        
+    const trimmedEmail = email && typeof email === 'string' && email.trim()
+        ? email.trim().toLowerCase()
+        : null;
+
+    // Build query conditions safely (only include fields that are actually provided)
+    const queryConditions = [{ phoneNumber: trimmedPhone }];
+    if (trimmedEmail) {
+        queryConditions.push({ email: trimmedEmail });
+    }
+
     // Check if user already exists
-    const existingUser = await User.findOne({
-        $or: [{ phoneNumber }, { email: email?.toLowerCase() }],
-    });
+    const existingUser = await User.findOne(
+        queryConditions.length === 1 ? queryConditions[0] : { $or: queryConditions }
+    );
 
     if (existingUser) {
-        throw new ApiError(409, "User with this phone number or email already exists");
+        if (existingUser.phoneNumber === trimmedPhone) {
+            throw new ApiError(409, "User with this phone number already exists");
+        }
+        throw new ApiError(409, "User with this email already exists");
     }
 
     // Handle profile picture upload
@@ -73,9 +90,9 @@ const registerUser = asyncHandler(async (req, res) => {
 
     // Create user
     const user = await User.create({
-        fullName,
-        phoneNumber,
-        email: email?.toLowerCase() || null,
+        fullName: fullName.trim(),
+        phoneNumber: trimmedPhone,
+        email: trimmedEmail || undefined,
         password,
         role: role || USER_ROLES.COLLECTOR,
         profilePicture,
@@ -105,17 +122,33 @@ const loginUser = asyncHandler(async (req, res) => {
         throw new ApiError(400, "Password is required");
     }
 
-    if (!phoneNumber && !email) {
+    const trimmedPhone = phoneNumber && typeof phoneNumber === 'string' && phoneNumber.trim()
+        ? phoneNumber.trim().replace(/\D/g, '').slice(-10)
+        : (phoneNumber ? String(phoneNumber).trim().replace(/\D/g, '').slice(-10) : null);
+
+    const trimmedEmail = email && typeof email === 'string' && email.trim()
+        ? email.trim().toLowerCase()
+        : null;
+
+    if (!trimmedPhone && !trimmedEmail) {
         throw new ApiError(400, "Phone number or email is required");
     }
 
+    const queryConditions = [];
+    if (trimmedPhone) {
+        queryConditions.push({ phoneNumber: trimmedPhone });
+    }
+    if (trimmedEmail) {
+        queryConditions.push({ email: trimmedEmail });
+    }
+
     // Find user by phone or email
-    const user = await User.findOne({
-        $or: [{ phoneNumber }, { email: email?.toLowerCase() }],
-    });
+    const user = await User.findOne(
+        queryConditions.length === 1 ? queryConditions[0] : { $or: queryConditions }
+    );
 
     if (!user) {
-        throw new ApiError(404, "User not found");
+        throw new ApiError(404, "User not found with these credentials");
     }
 
     // Check password
@@ -253,8 +286,18 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     const { fullName, email, address } = req.body;
 
     const updateFields = {};
-    if (fullName) updateFields.fullName = fullName;
-    if (email) updateFields.email = email.toLowerCase();
+    if (fullName && typeof fullName === 'string') updateFields.fullName = fullName.trim();
+    if (email && typeof email === 'string' && email.trim()) {
+        const trimmedEmail = email.trim().toLowerCase();
+        const existingEmail = await User.findOne({
+            email: trimmedEmail,
+            _id: { $ne: req.user._id },
+        });
+        if (existingEmail) {
+            throw new ApiError(409, "Email is already in use by another account");
+        }
+        updateFields.email = trimmedEmail;
+    }
     if (address) {
         if (typeof address === 'string') {
             try {

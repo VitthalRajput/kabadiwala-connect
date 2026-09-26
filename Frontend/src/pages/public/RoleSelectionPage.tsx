@@ -1,10 +1,13 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Recycle, ArrowRight, UserCheck, Briefcase } from 'lucide-react';
+import { Recycle, ArrowRight } from 'lucide-react';
 import { Button } from '../../components/common/Button';
+import { useTranslation } from '../../context/LanguageContext';
+import { LanguageSwitcher } from '../../components/common/LanguageSwitcher';
 
 export const RoleSelectionPage: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#FFFDFB] via-[#FFF8F2] to-white flex flex-col justify-between">
@@ -15,21 +18,24 @@ export const RoleSelectionPage: React.FC = () => {
             <Recycle className="w-6 h-6" />
           </div>
           <span className="text-xl font-extrabold tracking-tight text-gray-900">
-            Kabadiwala <span className="text-saffron-500">Connect</span>
+            {t('brand.name')} <span className="text-saffron-500">{t('brand.nameHighlight')}</span>
           </span>
         </Link>
-        <Link to="/login" className="text-sm font-semibold text-gray-600 hover:text-saffron-600">
-          Sign In
-        </Link>
+        <div className="flex items-center gap-4">
+          <LanguageSwitcher variant="compact" />
+          <Link to="/login" className="text-sm font-semibold text-gray-600 hover:text-saffron-600">
+            {t('roleSelection.signIn')}
+          </Link>
+        </div>
       </div>
 
       {/* Main Selection Body */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full text-center">
         <h1 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight">
-          Join as
+          {t('roleSelection.title')}
         </h1>
         <p className="text-sm sm:text-base text-gray-500 mt-2 mb-12">
-          Choose your role to continue
+          {t('roleSelection.subtitle')}
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-center max-w-3xl mx-auto">
@@ -56,13 +62,13 @@ export const RoleSelectionPage: React.FC = () => {
                 </svg>
               </div>
 
-              <h3 className="text-xl font-black text-gray-900">Kabadiwala</h3>
+              <h3 className="text-xl font-black text-gray-900">{t('roleSelection.collectorTitle')}</h3>
               <span className="text-xs font-bold text-saffron-600 uppercase tracking-wider mb-3">
-                (Collector)
+                {t('roleSelection.collectorSubtitle')}
               </span>
 
               <p className="text-xs sm:text-sm text-gray-500 leading-relaxed max-w-xs mb-8">
-                Create lots, get instant AI price estimates, and connect directly with certified recyclers.
+                {t('roleSelection.collectorDesc')}
               </p>
             </div>
 
@@ -73,7 +79,7 @@ export const RoleSelectionPage: React.FC = () => {
               onClick={() => navigate('/register?role=collector')}
               rightIcon={<ArrowRight className="w-4 h-4" />}
             >
-              Continue as Kabadiwala
+              {t('roleSelection.collectorBtn')}
             </Button>
           </div>
 
@@ -100,13 +106,13 @@ export const RoleSelectionPage: React.FC = () => {
                 </svg>
               </div>
 
-              <h3 className="text-xl font-black text-gray-900">Recycler</h3>
+              <h3 className="text-xl font-black text-gray-900">{t('roleSelection.recyclerTitle')}</h3>
               <span className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-3">
-                (Buyer)
+                {t('roleSelection.recyclerSubtitle')}
               </span>
 
               <p className="text-xs sm:text-sm text-gray-500 leading-relaxed max-w-xs mb-8">
-                Find quality material, place competitive offers, and manage doorstep fleet pickups.
+                {t('roleSelection.recyclerDesc')}
               </p>
             </div>
 
@@ -117,15 +123,15 @@ export const RoleSelectionPage: React.FC = () => {
               onClick={() => navigate('/register?role=recycler')}
               rightIcon={<ArrowRight className="w-4 h-4" />}
             >
-              Continue as Recycler
+              {t('roleSelection.recyclerBtn')}
             </Button>
           </div>
         </div>
 
         <p className="text-sm text-gray-500 mt-12">
-          Already have an account?{' '}
+          {t('roleSelection.alreadyAccount')}{' '}
           <Link to="/login" className="font-bold text-saffron-600 hover:underline">
-            Login
+            {t('nav.login')}
           </Link>
         </p>
       </div>
@@ -137,4 +143,3 @@ export const RoleSelectionPage: React.FC = () => {
     </div>
   );
 };
-

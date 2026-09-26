@@ -6,11 +6,13 @@ import { Badge } from '../../components/common/Badge';
 import { Button } from '../../components/common/Button';
 import { TableRowSkeleton } from '../../components/common/Skeleton';
 import { EmptyState } from '../../components/common/EmptyState';
+import { useTranslation } from '../../context/LanguageContext';
 import { formatCurrency, formatWeight, formatDate, formatLotId } from '../../utils/formatters';
 import { PlusCircle, Eye, Search, Filter } from 'lucide-react';
 
 export const SellerLotsPage: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [lots, setLots] = useState<Lot[]>([]);
   const [filteredLots, setFilteredLots] = useState<Lot[]>([]);
   const [statusFilter, setStatusFilter] = useState<string>('all');
@@ -63,11 +65,11 @@ export const SellerLotsPage: React.FC = () => {
   }, [searchQuery, lots]);
 
   const filterTabs = [
-    { label: 'All Lots', value: 'all' },
-    { label: 'Available (Pending)', value: 'pending' },
-    { label: 'Accepted', value: 'accepted' },
-    { label: 'Picked Up', value: 'picked' },
-    { label: 'Completed', value: 'completed' },
+    { label: t('lots.allLots'), value: 'all' },
+    { label: t('lots.availablePending'), value: 'pending' },
+    { label: t('lots.accepted'), value: 'accepted' },
+    { label: t('lots.pickedUp'), value: 'picked' },
+    { label: t('lots.completed'), value: 'completed' },
   ];
 
   return (
@@ -75,9 +77,9 @@ export const SellerLotsPage: React.FC = () => {
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl sm:text-2xl font-black text-gray-900">My Scrap Lots</h2>
+          <h2 className="text-xl sm:text-2xl font-black text-gray-900">{t('lots.myLotsTitle')}</h2>
           <p className="text-xs text-gray-500">
-            Manage your created lots, track buyer matches, and monitor pickup status
+            {t('lots.myLotsSubtitle')}
           </p>
         </div>
         <Button
@@ -86,7 +88,7 @@ export const SellerLotsPage: React.FC = () => {
           leftIcon={<PlusCircle className="w-4 h-4" />}
           className="shadow-sm"
         >
-          Create New Lot
+          {t('lots.createNewLot')}
         </Button>
       </div>
 
@@ -113,7 +115,7 @@ export const SellerLotsPage: React.FC = () => {
         <div className="relative w-full sm:w-64">
           <input
             type="text"
-            placeholder="Search lot, material..."
+            placeholder={t('lots.searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-9 pr-3 py-1.5 text-xs rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-saffron-500"
@@ -137,9 +139,9 @@ export const SellerLotsPage: React.FC = () => {
         ) : filteredLots.length === 0 ? (
           <div className="p-10">
             <EmptyState
-              title="No lots match this filter"
-              description="Try changing your search term or create a new scrap listing."
-              actionText="Create Lot"
+              title={t('lots.noLotsMatch')}
+              description={t('lots.noLotsDesc')}
+              actionText={t('sidebar.createLot')}
               onAction={() => navigate('/seller/lots/create')}
             />
           </div>
@@ -148,14 +150,14 @@ export const SellerLotsPage: React.FC = () => {
             <table className="w-full text-left text-sm">
               <thead className="bg-gray-50/80 text-[11px] font-bold text-gray-500 uppercase tracking-wider border-b border-gray-100">
                 <tr>
-                  <th className="py-3.5 px-5">Lot ID</th>
-                  <th className="py-3.5 px-4">Material</th>
-                  <th className="py-3.5 px-4">Quantity</th>
-                  <th className="py-3.5 px-4">Est. Price</th>
-                  <th className="py-3.5 px-4">Status</th>
-                  <th className="py-3.5 px-4">Matched Buyer</th>
-                  <th className="py-3.5 px-4">Created Date</th>
-                  <th className="py-3.5 px-5 text-right">Action</th>
+                  <th className="py-3.5 px-5">{t('lots.lotId')}</th>
+                  <th className="py-3.5 px-4">{t('lots.material')}</th>
+                  <th className="py-3.5 px-4">{t('lots.quantity')}</th>
+                  <th className="py-3.5 px-4">{t('lots.estPrice')}</th>
+                  <th className="py-3.5 px-4">{t('lots.status')}</th>
+                  <th className="py-3.5 px-4">{t('lots.matchedBuyer')}</th>
+                  <th className="py-3.5 px-4">{t('lots.createdDate')}</th>
+                  <th className="py-3.5 px-5 text-right">{t('lots.action')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
@@ -169,7 +171,7 @@ export const SellerLotsPage: React.FC = () => {
                   const buyerName =
                     typeof lot.recyclerId === 'object' && lot.recyclerId !== null
                       ? lot.recyclerId.fullName
-                      : 'None';
+                      : t('lots.none');
 
                   return (
                     <tr key={lot._id} className="hover:bg-gray-50/80 transition-colors">
@@ -202,7 +204,7 @@ export const SellerLotsPage: React.FC = () => {
                           className="text-xs py-1 px-3"
                           leftIcon={<Eye className="w-3.5 h-3.5" />}
                         >
-                          Details
+                          {t('lots.details')}
                         </Button>
                       </td>
                     </tr>

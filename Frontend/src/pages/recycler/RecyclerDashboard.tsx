@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useTranslation } from '../../context/LanguageContext';
 import { lotsApi } from '../../api/lots.api';
 import { transactionsApi } from '../../api/transactions.api';
 import { Lot } from '../../types/lot.types';
@@ -26,6 +27,7 @@ import {
 
 export const RecyclerDashboard: React.FC = () => {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const [availableLots, setAvailableLots] = useState<Lot[]>([]);
@@ -58,17 +60,21 @@ export const RecyclerDashboard: React.FC = () => {
           setScheduledPickupsCount(pickups);
         }
 
-        // 3. Fetch purchases
-        const txRes = await transactionsApi.getRecyclerTransactions({ page: 1, limit: 50 });
+        // 3. Fetch completed purchase transactions
+        const txRes = await transactionsApi.getCollectorTransactions({ page: 1, limit: 50 });
         if (isMounted && txRes.data) {
-          const txs = txRes.data.transactions || [];
-          const sum = txs.reduce((acc, t) => acc + (t.amount || 0), 0);
-          setTotalPurchases(sum);
+          const purchases = txRes.data.transactions || [];
+          const totalSpent = purchases
+            .filter((t) => t.status === 'completed')
+            .reduce((sum, t) => sum + (t.amount || 0), 0);
+          setTotalPurchases(totalSpent);
         }
-      } catch (err) {
-        console.error('Failed to load recycler dashboard data', err);
+      } catch {
+        // Graceful error fallback
       } finally {
-        if (isMounted) setIsLoading(false);
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
     };
 
@@ -97,7 +103,7 @@ export const RecyclerDashboard: React.FC = () => {
             {/* Available Lots */}
             <Card className="flex items-center justify-between">
               <div>
-                <span className="text-xs font-semibold text-gray-500 block">Available Lots</span>
+                <span className="text-xs font-semibold text-gray-500 block">{t('dashboard.stats.availableLots')}</span>
                 <span className="text-2xl sm:text-3xl font-black text-gray-900 mt-1 block">
                   {availableLotsCount}
                 </span>
@@ -110,7 +116,7 @@ export const RecyclerDashboard: React.FC = () => {
             {/* My Offers / Accepted */}
             <Card className="flex items-center justify-between">
               <div>
-                <span className="text-xs font-semibold text-gray-500 block">My Accepted Lots</span>
+                <span className="text-xs font-semibold text-gray-500 block">{t('dashboard.stats.lotsAccepted')}</span>
                 <span className="text-2xl sm:text-3xl font-black text-blue-700 mt-1 block">
                   {acceptedCount}
                 </span>
@@ -123,7 +129,7 @@ export const RecyclerDashboard: React.FC = () => {
             {/* Scheduled Pickups */}
             <Card className="flex items-center justify-between">
               <div>
-                <span className="text-xs font-semibold text-gray-500 block">Scheduled Pickups</span>
+                <span className="text-xs font-semibold text-gray-500 block">{t('dashboard.stats.activePickups')}</span>
                 <span className="text-2xl sm:text-3xl font-black text-green-700 mt-1 block">
                   {scheduledPickupsCount}
                 </span>
@@ -136,7 +142,7 @@ export const RecyclerDashboard: React.FC = () => {
             {/* Total Purchases */}
             <Card className="flex items-center justify-between">
               <div>
-                <span className="text-xs font-semibold text-gray-500 block">Total Purchases</span>
+                <span className="text-xs font-semibold text-gray-500 block">{t('dashboard.stats.totalEarnings')}</span>
                 <span className="text-2xl sm:text-3xl font-black text-gray-900 mt-1 block">
                   {formatCurrency(totalPurchases)}
                 </span>
@@ -155,16 +161,16 @@ export const RecyclerDashboard: React.FC = () => {
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         <div className="p-5 sm:px-6 border-b border-gray-100 flex items-center justify-between">
           <div>
-            <h3 className="text-base font-bold text-gray-900">Latest Available Lots</h3>
+            <h3 className="text-base font-bold text-gray-900">{t('dashboard.latestAvailable')}</h3>
             <p className="text-xs text-gray-500">
-              Fresh scrap lots uploaded by local collectors in your region
+              {t('dashboard.latestAvailableSubtitle')}
             </p>
           </div>
           <button
             onClick={() => navigate('/recycler/lots')}
-            className="text-xs font-bold text-saffron-600 hover:text-saffron-700 flex items-center gap-1"
+            className="text-xs font-bold text-saffron-600 hover:text-saffron-700 flex items-center gap-1 cursor-pointer"
           >
-            <span>View All</span>
+            <span>{t('dashboard.viewAll')}</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
@@ -194,13 +200,13 @@ export const RecyclerDashboard: React.FC = () => {
             <table className="w-full text-left text-sm">
               <thead className="bg-gray-50/80 text-[11px] font-bold text-gray-500 uppercase tracking-wider border-b border-gray-100">
                 <tr>
-                  <th className="py-3.5 px-5">Lot ID</th>
-                  <th className="py-3.5 px-4">Material</th>
-                  <th className="py-3.5 px-4">Quantity</th>
-                  <th className="py-3.5 px-4">Location</th>
-                  <th className="py-3.5 px-4">Price</th>
-                  <th className="py-3.5 px-4">Posted On</th>
-                  <th className="py-3.5 px-5 text-right">Action</th>
+                  <th className="py-3.5 px-5">{t('lots.lotId')}</th>
+                  <th className="py-3.5 px-4">{t('lots.material')}</th>
+                  <th className="py-3.5 px-4">{t('common.weight')}</th>
+                  <th className="py-3.5 px-4">{t('createLot.pickupLocation')}</th>
+                  <th className="py-3.5 px-4">{t('common.price')}</th>
+                  <th className="py-3.5 px-4">{t('common.date')}</th>
+                  <th className="py-3.5 px-5 text-right">{t('common.action')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
@@ -237,7 +243,7 @@ export const RecyclerDashboard: React.FC = () => {
                           className="text-xs py-1 px-3 border-gray-300 hover:border-saffron-500 hover:text-saffron-600"
                           leftIcon={<Eye className="w-3.5 h-3.5" />}
                         >
-                          View
+                          {t('common.view')}
                         </Button>
                       </td>
                     </tr>
@@ -251,4 +257,3 @@ export const RecyclerDashboard: React.FC = () => {
     </div>
   );
 };
-

@@ -1,0 +1,954 @@
+{
+  "info": {
+    "name": "Kabadiwala Connect API - Complete",
+    "description": "Complete API collection with ALL endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "accessToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "refreshToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "materialId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "lotId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "transactionId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "notificationId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "priceId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "syncId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Health Check",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/healthcheck",
+              "host": ["{{baseUrl}}"],
+              "path": ["healthcheck"]
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "body": "{\n  \"statusCode\": 200,\n  \"data\": {\n    \"status\": \"healthy\",\n    \"timestamp\": \"2026-09-07T10:00:00.000Z\",\n    \"uptime\": 123.45\n  },\n  \"message\": \"Server is healthy\",\n  \"success\": true\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "2. User Service",
+      "item": [
+        {
+          "name": "2.1 Register User",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Rahul Sharma\",\n  \"phoneNumber\": \"9876543210\",\n  \"email\": \"rahul@example.com\",\n  \"password\": \"Rahul@123\",\n  \"role\": \"collector\",\n  \"address\": {\n    \"street\": \"123 Main St\",\n    \"city\": \"Mumbai\",\n    \"state\": \"Maharashtra\",\n    \"pincode\": \"400001\"\n  }\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/users/register", "host": ["{{baseUrl}}"], "path": ["users", "register"]}
+          }
+        },
+        {
+          "name": "2.2 Login User",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phoneNumber\": \"9876543210\",\n  \"password\": \"Rahul@123\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/users/login", "host": ["{{baseUrl}}"], "path": ["users", "login"]}
+          }
+        },
+        {
+          "name": "2.3 Logout User",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/users/logout", "host": ["{{baseUrl}}"], "path": ["users", "logout"]}
+          }
+        },
+        {
+          "name": "2.4 Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/users/refresh-token", "host": ["{{baseUrl}}"], "path": ["users", "refresh-token"]}
+          }
+        },
+        {
+          "name": "2.5 Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/users/me", "host": ["{{baseUrl}}"], "path": ["users", "me"]}
+          }
+        },
+        {
+          "name": "2.6 Update Profile",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Rahul Kumar Sharma\",\n  \"email\": \"rahulkumar@example.com\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/users/update-profile", "host": ["{{baseUrl}}"], "path": ["users", "update-profile"]}
+          }
+        },
+        {
+          "name": "2.7 Update Location",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"latitude\": 19.0760,\n  \"longitude\": 72.8777,\n  \"address\": \"Andheri East, Mumbai\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/users/update-location", "host": ["{{baseUrl}}"], "path": ["users", "update-location"]}
+          }
+        },
+        {
+          "name": "2.8 Change Password",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"oldPassword\": \"Rahul@123\",\n  \"newPassword\": \"NewRahul@456\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/users/change-password", "host": ["{{baseUrl}}"], "path": ["users", "change-password"]}
+          }
+        },
+        {
+          "name": "2.9 Get All Collectors",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {
+              "raw": "{{baseUrl}}/users/collectors?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "collectors"],
+              "query": [{"key": "page", "value": "1"}, {"key": "limit", "value": "10"}]
+            }
+          }
+        },
+        {
+          "name": "2.10 Get All Recyclers",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {
+              "raw": "{{baseUrl}}/users/recyclers?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "recyclers"],
+              "query": [{"key": "page", "value": "1"}, {"key": "limit", "value": "10"}]
+            }
+          }
+        },
+        {
+          "name": "2.11 Verify User (Admin)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "url": {"raw": "{{baseUrl}}/users/verify/{{userId}}", "host": ["{{baseUrl}}"], "path": ["users", "verify", "{{userId}}"]}
+          }
+        },
+        {
+          "name": "2.12 Delete User (Soft Delete)",
+          "request": {
+            "method": "DELETE",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/users/delete", "host": ["{{baseUrl}}"], "path": ["users", "delete"]}
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. ML Service",
+      "item": [
+        {
+          "name": "3.1 Classify Image",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "body": {
+              "mode": "formdata",
+              "formdata": [{"key": "image", "type": "file"}]
+            },
+            "url": {"raw": "{{baseUrl}}/ml/classify", "host": ["{{baseUrl}}"], "path": ["ml", "classify"]}
+          }
+        },
+        {
+          "name": "3.2 Get Price Recommendation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category\": \"Motors\",\n  \"state\": \"Uttar Pradesh\",\n  \"city\": \"Ghaziabad\",\n  \"quantity\": 2,\n  \"total_weight_kg\": 8.0\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/ml/price", "host": ["{{baseUrl}}"], "path": ["ml", "price"]}
+          }
+        },
+        {
+          "name": "3.3 Get Valid Categories",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/ml/categories", "host": ["{{baseUrl}}"], "path": ["ml", "categories"]}
+          }
+        },
+        {
+          "name": "3.4 Validate Category",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/ml/validate/Motors", "host": ["{{baseUrl}}"], "path": ["ml", "validate", "Motors"]}
+          }
+        },
+        {
+          "name": "3.5 ML Service Status",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/ml/status", "host": ["{{baseUrl}}"], "path": ["ml", "status"]}
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Material Service",
+      "item": [
+        {
+          "name": "4.1 Create Material",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {"key": "name", "value": "Plastic Bottles PET", "type": "text"},
+                {"key": "category", "value": "plastic", "type": "text"},
+                {"key": "subCategory", "value": "PET", "type": "text"},
+                {"key": "description", "value": "Clean plastic bottles", "type": "text"},
+                {"key": "isRecyclable", "value": "true", "type": "text"},
+                {"key": "isHazardous", "value": "false", "type": "text"},
+                {"key": "processingTime", "value": "24", "type": "text"},
+                {"key": "images", "type": "file"}
+              ]
+            },
+            "url": {"raw": "{{baseUrl}}/materials", "host": ["{{baseUrl}}"], "path": ["materials"]}
+          }
+        },
+        {
+          "name": "4.2 Get All Materials",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/materials?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["materials"],
+              "query": [{"key": "page", "value": "1"}, {"key": "limit", "value": "10"}]
+            }
+          }
+        },
+        {
+          "name": "4.3 Get Material by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/materials/{{materialId}}", "host": ["{{baseUrl}}"], "path": ["materials", "{{materialId}}"]}
+          }
+        },
+        {
+          "name": "4.4 Update Material",
+          "request": {
+            "method": "PATCH",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {"key": "name", "value": "Plastic Bottles PET Recycled", "type": "text"},
+                {"key": "description", "value": "Updated description", "type": "text"}
+              ]
+            },
+            "url": {"raw": "{{baseUrl}}/materials/{{materialId}}", "host": ["{{baseUrl}}"], "path": ["materials", "{{materialId}}"]}
+          }
+        },
+        {
+          "name": "4.5 Delete Material",
+          "request": {
+            "method": "DELETE",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/materials/{{materialId}}", "host": ["{{baseUrl}}"], "path": ["materials", "{{materialId}}"]}
+          }
+        },
+        {
+          "name": "4.6 Get Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/materials/categories", "host": ["{{baseUrl}}"], "path": ["materials", "categories"]}
+          }
+        },
+        {
+          "name": "4.7 Get Materials by Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/materials/category/plastic", "host": ["{{baseUrl}}"], "path": ["materials", "category", "plastic"]}
+          }
+        },
+        {
+          "name": "4.8 Delete Material Image",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"imageUrl\": \"https://cloudinary.com/image.jpg\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/materials/{{materialId}}/image", "host": ["{{baseUrl}}"], "path": ["materials", "{{materialId}}", "image"]}
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Price Service",
+      "item": [
+        {
+          "name": "5.1 Set Price",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"materialId\": \"{{materialId}}\",\n  \"pricePerKg\": 45,\n  \"minQuantity\": 1,\n  \"maxQuantity\": 100,\n  \"specialNotes\": \"Bulk orders get discount\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/prices", "host": ["{{baseUrl}}"], "path": ["prices"]}
+          }
+        },
+        {
+          "name": "5.2 Get My Prices",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {
+              "raw": "{{baseUrl}}/prices?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["prices"],
+              "query": [{"key": "page", "value": "1"}, {"key": "limit", "value": "10"}]
+            }
+          }
+        },
+        {
+          "name": "5.3 Get Prices by Material",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/prices/material/{{materialId}}", "host": ["{{baseUrl}}"], "path": ["prices", "material", "{{materialId}}"]}
+          }
+        },
+        {
+          "name": "5.4 Get Best Price",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/prices/material/{{materialId}}/best", "host": ["{{baseUrl}}"], "path": ["prices", "material", "{{materialId}}", "best"]}
+          }
+        },
+        {
+          "name": "5.5 Get Price History",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/prices/material/{{materialId}}/history", "host": ["{{baseUrl}}"], "path": ["prices", "material", "{{materialId}}", "history"]}
+          }
+        },
+        {
+          "name": "5.6 Deactivate Price",
+          "request": {
+            "method": "DELETE",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/prices/{{priceId}}", "host": ["{{baseUrl}}"], "path": ["prices", "{{priceId}}"]}
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Lot Service",
+      "item": [
+        {
+          "name": "6.1 Create Lot",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {"key": "estimatedWeight", "value": "8.0", "type": "text"},
+                {"key": "state", "value": "Uttar Pradesh", "type": "text"},
+                {"key": "city", "value": "Ghaziabad", "type": "text"},
+                {"key": "quantity", "value": "2", "type": "text"},
+                {"key": "location", "value": "{\"address\":\"Ghaziabad\",\"latitude\":28.6692,\"longitude\":77.4538}", "type": "text"},
+                {"key": "description", "value": "Plastic bottles for recycling", "type": "text"},
+                {"key": "images", "type": "file"}
+              ]
+            },
+            "url": {"raw": "{{baseUrl}}/lots", "host": ["{{baseUrl}}"], "path": ["lots"]}
+          }
+        },
+        {
+          "name": "6.2 Get Available Lots",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {
+              "raw": "{{baseUrl}}/lots?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["lots"],
+              "query": [{"key": "page", "value": "1"}, {"key": "limit", "value": "10"}]
+            }
+          }
+        },
+        {
+          "name": "6.3 Get Collector Lots",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {
+              "raw": "{{baseUrl}}/lots/collector?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["lots", "collector"],
+              "query": [{"key": "page", "value": "1"}, {"key": "limit", "value": "10"}]
+            }
+          }
+        },
+        {
+          "name": "6.4 Get Recycler Lots",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {
+              "raw": "{{baseUrl}}/lots/recycler?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["lots", "recycler"],
+              "query": [{"key": "page", "value": "1"}, {"key": "limit", "value": "10"}]
+            }
+          }
+        },
+        {
+          "name": "6.5 Get Lot by ID",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/lots/{{lotId}}", "host": ["{{baseUrl}}"], "path": ["lots", "{{lotId}}"]}
+          }
+        },
+        {
+          "name": "6.6 Update Lot Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"picked\",\n  \"actualWeight\": 7.8\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/lots/{{lotId}}", "host": ["{{baseUrl}}"], "path": ["lots", "{{lotId}}"]}
+          }
+        },
+        {
+          "name": "6.7 Accept Lot",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"price\": 1200\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/lots/{{lotId}}/accept", "host": ["{{baseUrl}}"], "path": ["lots", "{{lotId}}", "accept"]}
+          }
+        },
+        {
+          "name": "6.8 Delete Lot",
+          "request": {
+            "method": "DELETE",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/lots/{{lotId}}", "host": ["{{baseUrl}}"], "path": ["lots", "{{lotId}}"]}
+          }
+        }
+      ]
+    },
+    {
+      "name": "7. Transaction Service",
+      "item": [
+        {
+          "name": "7.1 Create Transaction",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lotId\": \"{{lotId}}\",\n  \"paymentMethod\": \"cash\",\n  \"amount\": 1200,\n  \"weightDetails\": {\n    \"actualWeight\": 7.8\n  },\n  \"notes\": \"Handover completed\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/transactions", "host": ["{{baseUrl}}"], "path": ["transactions"]}
+          }
+        },
+        {
+          "name": "7.2 Get Collector Transactions",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {
+              "raw": "{{baseUrl}}/transactions/collector?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["transactions", "collector"],
+              "query": [{"key": "page", "value": "1"}, {"key": "limit", "value": "10"}]
+            }
+          }
+        },
+        {
+          "name": "7.3 Get Recycler Transactions",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {
+              "raw": "{{baseUrl}}/transactions/recycler?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["transactions", "recycler"],
+              "query": [{"key": "page", "value": "1"}, {"key": "limit", "value": "10"}]
+            }
+          }
+        },
+        {
+          "name": "7.4 Get Transaction by ID",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/transactions/{{transactionId}}", "host": ["{{baseUrl}}"], "path": ["transactions", "{{transactionId}}"]}
+          }
+        },
+        {
+          "name": "7.5 Update Handover Details",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"handoverGPS\": {\n    \"latitude\": 28.6692,\n    \"longitude\": 77.4538\n  },\n  \"receivedBy\": \"John Doe\",\n  \"verifiedBy\": \"Jane Smith\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/transactions/{{transactionId}}/handover", "host": ["{{baseUrl}}"], "path": ["transactions", "{{transactionId}}", "handover"]}
+          }
+        },
+        {
+          "name": "7.6 Update Payment Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"paymentStatus\": \"completed\",\n  \"transactionId\": \"PAYMENT_REF_123\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/transactions/{{transactionId}}/payment", "host": ["{{baseUrl}}"], "path": ["transactions", "{{transactionId}}", "payment"]}
+          }
+        }
+      ]
+    },
+    {
+      "name": "8. Notification Service",
+      "item": [
+        {
+          "name": "8.1 Get My Notifications",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {
+              "raw": "{{baseUrl}}/notifications?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["notifications"],
+              "query": [{"key": "page", "value": "1"}, {"key": "limit", "value": "10"}]
+            }
+          }
+        },
+        {
+          "name": "8.2 Get Notification Types",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/notifications/types", "host": ["{{baseUrl}}"], "path": ["notifications", "types"]}
+          }
+        },
+        {
+          "name": "8.3 Get Notification Stats",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/notifications/stats", "host": ["{{baseUrl}}"], "path": ["notifications", "stats"]}
+          }
+        },
+        {
+          "name": "8.4 Mark All as Read",
+          "request": {
+            "method": "PATCH",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/notifications/mark-all-read", "host": ["{{baseUrl}}"], "path": ["notifications", "mark-all-read"]}
+          }
+        },
+        {
+          "name": "8.5 Delete Read Notifications",
+          "request": {
+            "method": "DELETE",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/notifications/delete-read", "host": ["{{baseUrl}}"], "path": ["notifications", "delete-read"]}
+          }
+        },
+        {
+          "name": "8.6 Mark Notification as Read",
+          "request": {
+            "method": "PATCH",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/notifications/{{notificationId}}", "host": ["{{baseUrl}}"], "path": ["notifications", "{{notificationId}}"]}
+          }
+        },
+        {
+          "name": "8.7 Delete Notification",
+          "request": {
+            "method": "DELETE",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/notifications/{{notificationId}}", "host": ["{{baseUrl}}"], "path": ["notifications", "{{notificationId}}"]}
+          }
+        },
+        {
+          "name": "8.8 Send Notification (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"type\": \"system\",\n  \"title\": \"System Update\",\n  \"message\": \"New features available!\",\n  \"priority\": \"high\",\n  \"deliveryMethod\": [\"in_app\", \"push\"]\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/notifications/send", "host": ["{{baseUrl}}"], "path": ["notifications", "send"]}
+          }
+        },
+        {
+          "name": "8.9 Send Bulk Notification (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userRole\": \"collector\",\n  \"type\": \"system\",\n  \"title\": \"New Recycling Drive\",\n  \"message\": \"Join our new recycling initiative!\",\n  \"priority\": \"medium\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/notifications/bulk", "host": ["{{baseUrl}}"], "path": ["notifications", "bulk"]}
+          }
+        }
+      ]
+    },
+    {
+      "name": "9. Matchmaking Service",
+      "item": [
+        {
+          "name": "9.1 Find Best Recycler",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/matchmaking/lot/{{lotId}}", "host": ["{{baseUrl}}"], "path": ["matchmaking", "lot", "{{lotId}}"]}
+          }
+        },
+        {
+          "name": "9.2 Auto-Match",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/matchmaking/lot/{{lotId}}/auto", "host": ["{{baseUrl}}"], "path": ["matchmaking", "lot", "{{lotId}}", "auto"]}
+          }
+        },
+        {
+          "name": "9.3 Get Match History",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {
+              "raw": "{{baseUrl}}/matchmaking/history?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["matchmaking", "history"],
+              "query": [{"key": "page", "value": "1"}, {"key": "limit", "value": "10"}]
+            }
+          }
+        },
+        {
+          "name": "9.4 Get Match Details",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/matchmaking/details/{{lotId}}", "host": ["{{baseUrl}}"], "path": ["matchmaking", "details", "{{lotId}}"]}
+          }
+        }
+      ]
+    },
+    {
+      "name": "10. Audit Service",
+      "item": [
+        {
+          "name": "10.1 Log Action",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"userRole\": \"collector\",\n  \"action\": \"create_lot\",\n  \"resourceType\": \"lot\",\n  \"resourceId\": \"{{lotId}}\",\n  \"changes\": {\n    \"after\": {\n      \"weight\": 8.0\n    }\n  }\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/audit", "host": ["{{baseUrl}}"], "path": ["audit"]}
+          }
+        },
+        {
+          "name": "10.2 Get Action Types",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/audit/actions", "host": ["{{baseUrl}}"], "path": ["audit", "actions"]}
+          }
+        },
+        {
+          "name": "10.3 Get Resource Types",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/audit/resources", "host": ["{{baseUrl}}"], "path": ["audit", "resources"]}
+          }
+        },
+        {
+          "name": "10.4 Get System Logs (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {
+              "raw": "{{baseUrl}}/audit/system-logs?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["audit", "system-logs"],
+              "query": [{"key": "page", "value": "1"}, {"key": "limit", "value": "10"}]
+            }
+          }
+        },
+        {
+          "name": "10.5 Get Resource Audit",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/audit/resource/lot/{{lotId}}", "host": ["{{baseUrl}}"], "path": ["audit", "resource", "lot", "{{lotId}}"]}
+          }
+        },
+        {
+          "name": "10.6 Get User Activity",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {
+              "raw": "{{baseUrl}}/audit/user/{{userId}}?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["audit", "user", "{{userId}}"],
+              "query": [{"key": "page", "value": "1"}, {"key": "limit", "value": "10"}]
+            }
+          }
+        },
+        {
+          "name": "10.7 Get Handover Records",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/audit/handover/{{transactionId}}", "host": ["{{baseUrl}}"], "path": ["audit", "handover", "{{transactionId}}"]}
+          }
+        },
+        {
+          "name": "10.8 Get Traceability Report",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/audit/traceability/{{lotId}}", "host": ["{{baseUrl}}"], "path": ["audit", "traceability", "{{lotId}}"]}
+          }
+        }
+      ]
+    },
+    {
+      "name": "11. Offline Sync Service",
+      "item": [
+        {
+          "name": "11.1 Start Sync",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"deviceId\": \"device_12345\",\n  \"syncType\": \"incremental\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/sync/start", "host": ["{{baseUrl}}"], "path": ["sync", "start"]}
+          }
+        },
+        {
+          "name": "11.2 Get Offline Data",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {
+              "raw": "{{baseUrl}}/sync/offline-data?lastSyncTime=2026-09-07T00:00:00.000Z",
+              "host": ["{{baseUrl}}"],
+              "path": ["sync", "offline-data"],
+              "query": [{"key": "lastSyncTime", "value": "2026-09-07T00:00:00.000Z"}]
+            }
+          }
+        },
+        {
+          "name": "11.3 Get Sync Status",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {
+              "raw": "{{baseUrl}}/sync/status?deviceId=device_12345",
+              "host": ["{{baseUrl}}"],
+              "path": ["sync", "status"],
+              "query": [{"key": "deviceId", "value": "device_12345"}]
+            }
+          }
+        },
+        {
+          "name": "11.4 Get Sync History",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {
+              "raw": "{{baseUrl}}/sync/history?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["sync", "history"],
+              "query": [{"key": "page", "value": "1"}, {"key": "limit", "value": "10"}]
+            }
+          }
+        },
+        {
+          "name": "11.5 Sync Data",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lots\": [\n    {\n      \"lotId\": \"offline_lot_1\",\n      \"operation\": \"create\",\n      \"data\": {\n        \"materialId\": \"{{materialId}}\",\n        \"estimatedWeight\": 5.5,\n        \"description\": \"Plastic bottles\"\n      }\n    }\n  ],\n  \"transactions\": [],\n  \"metadata\": {\n    \"appVersion\": \"1.0.0\"\n  }\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/sync/{{syncId}}", "host": ["{{baseUrl}}"], "path": ["sync", "{{syncId}}"]}
+          }
+        },
+        {
+          "name": "11.6 Cancel Sync",
+          "request": {
+            "method": "DELETE",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/sync/{{syncId}}", "host": ["{{baseUrl}}"], "path": ["sync", "{{syncId}}"]}
+          }
+        }
+      ]
+    }
+  ]
+}

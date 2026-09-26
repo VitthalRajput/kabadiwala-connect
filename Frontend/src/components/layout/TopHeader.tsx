@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useOffline } from '../../context/OfflineContext';
+import { useTranslation } from '../../context/LanguageContext';
+import { LanguageSwitcher } from '../common/LanguageSwitcher';
 import { notificationsApi } from '../../api/notifications.api';
 import { AppNotification } from '../../types/notification.types';
 import { DUMMY_NOTIFICATIONS_SELLER, DUMMY_NOTIFICATIONS_RECYCLER } from '../../utils/dummyNotifications';
@@ -15,6 +17,7 @@ interface TopHeaderProps {
 export const TopHeader: React.FC<TopHeaderProps> = ({ onMenuToggle }) => {
   const { user, role, switchRole } = useAuth();
   const { isOnline } = useOffline();
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const [notifications, setNotifications] = useState<AppNotification[]>([]);
@@ -96,7 +99,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onMenuToggle }) => {
   const profilePath = role === 'recycler' ? '/recycler/profile' : '/seller/profile';
 
   const userDisplayName = user?.fullName || (role === 'recycler' ? 'Kunal' : 'Ramesh');
-  const roleTitle = role === 'recycler' ? 'Recycler (Buyer)' : 'Kabadiwala (Seller)';
+  const roleTitle = role === 'recycler' ? t('brand.buyerPortal') : t('brand.sellerPortal');
 
   return (
     <header className="h-20 bg-white border-b border-gray-200 px-4 sm:px-8 flex items-center justify-between sticky top-0 z-30 shadow-xs">
@@ -112,18 +115,21 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onMenuToggle }) => {
 
         <div>
           <h1 className="text-lg sm:text-xl font-extrabold text-gray-900">
-            Welcome, {userDisplayName}!
+            {t('dashboard.welcome')}, {userDisplayName}!
           </h1>
           <p className="text-xs text-gray-500 hidden sm:block">
             {role === 'recycler'
-              ? 'Find verified scrap material for your recycling operations.'
-              : "Let's make recycling simple, transparent and rewarding."}
+              ? t('dashboard.recyclerSubtitle')
+              : t('dashboard.sellerSubtitle')}
           </p>
         </div>
       </div>
 
-      {/* Right: Portal switcher, Offline badge, notifications bell & User profile card */}
-      <div className="flex items-center gap-2.5 sm:gap-4">
+      {/* Right: Language Switcher, Portal switcher, Offline badge, notifications bell & User profile card */}
+      <div className="flex items-center gap-2 sm:gap-3">
+        {/* Language Switcher Dropdown */}
+        <LanguageSwitcher variant="header" />
+
         {/* Quick Portal Switcher Button */}
         <button
           type="button"
@@ -133,16 +139,16 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onMenuToggle }) => {
         >
           <RefreshCw className="w-3.5 h-3.5 text-saffron-600" />
           <span className="hidden md:inline">
-            Switch to {role === 'recycler' ? 'Collector Portal' : 'Buyer Portal'}
+            {role === 'recycler' ? t('nav.switchToCollector') : t('nav.switchToBuyer')}
           </span>
-          <span className="md:hidden">Switch</span>
+          <span className="md:hidden">{t('nav.switchPortal')}</span>
         </button>
 
         {/* Offline Badge */}
         {!isOnline && (
           <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200 text-xs font-semibold">
             <WifiOff className="w-3.5 h-3.5 text-amber-600" />
-            <span>Offline</span>
+            <span>{t('common.offline')}</span>
           </div>
         )}
 
@@ -164,10 +170,10 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onMenuToggle }) => {
           {isDropdownOpen && (
             <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-xl border border-gray-100 py-3 z-50 overflow-hidden animate-scale-in">
               <div className="px-4 py-2 border-b border-gray-100 flex items-center justify-between">
-                <span className="text-sm font-bold text-gray-900">Notifications</span>
+                <span className="text-sm font-bold text-gray-900">{t('notifications.title')}</span>
                 {unreadCount > 0 && (
                   <span className="text-xs text-saffron-600 font-semibold">
-                    {unreadCount} unread
+                    {unreadCount} {t('notifications.unread')}
                   </span>
                 )}
               </div>
@@ -175,7 +181,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onMenuToggle }) => {
               <div className="max-h-72 overflow-y-auto divide-y divide-gray-50">
                 {notifications.length === 0 ? (
                   <div className="p-6 text-center text-xs text-gray-400">
-                    No recent notifications
+                    {t('notifications.noRecent')}
                   </div>
                 ) : (
                   notifications.map((n) => (
@@ -211,7 +217,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onMenuToggle }) => {
                   }}
                   className="text-xs font-semibold text-saffron-600 hover:text-saffron-700 inline-flex items-center gap-1 py-1"
                 >
-                  <span>View All Notifications</span>
+                  <span>{t('notifications.viewAll')}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>

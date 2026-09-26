@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useTranslation } from '../../context/LanguageContext';
 import {
   LayoutDashboard,
   PlusCircle,
@@ -24,6 +25,7 @@ interface SidebarProps {
 
 export const Sidebar: React.FC<SidebarProps> = ({ onCloseMobile }) => {
   const { role, logout } = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -32,25 +34,25 @@ export const Sidebar: React.FC<SidebarProps> = ({ onCloseMobile }) => {
   };
 
   const sellerNav = [
-    { label: 'Dashboard', path: '/seller/dashboard', icon: <LayoutDashboard className="w-4 h-4" /> },
-    { label: 'Create Lot', path: '/seller/lots/create', icon: <PlusCircle className="w-4 h-4" /> },
-    { label: 'My Lots', path: '/seller/lots', icon: <Package className="w-4 h-4" /> },
-    { label: 'Price Estimate', path: '/seller/price-estimate', icon: <Calculator className="w-4 h-4" /> },
-    { label: 'Pickups', path: '/seller/pickups', icon: <Truck className="w-4 h-4" /> },
-    { label: 'Transactions', path: '/seller/transactions', icon: <CreditCard className="w-4 h-4" /> },
-    { label: 'Notifications', path: '/seller/notifications', icon: <Bell className="w-4 h-4" /> },
-    { label: 'Profile', path: '/seller/profile', icon: <UserCheck className="w-4 h-4" /> },
+    { label: t('sidebar.dashboard'), path: '/seller/dashboard', icon: <LayoutDashboard className="w-4 h-4" /> },
+    { label: t('sidebar.createLot'), path: '/seller/lots/create', icon: <PlusCircle className="w-4 h-4" /> },
+    { label: t('sidebar.myLots'), path: '/seller/lots', icon: <Package className="w-4 h-4" /> },
+    { label: t('sidebar.priceEstimate'), path: '/seller/price-estimate', icon: <Calculator className="w-4 h-4" /> },
+    { label: t('sidebar.pickups'), path: '/seller/pickups', icon: <Truck className="w-4 h-4" /> },
+    { label: t('sidebar.transactions'), path: '/seller/transactions', icon: <CreditCard className="w-4 h-4" /> },
+    { label: t('sidebar.notifications'), path: '/seller/notifications', icon: <Bell className="w-4 h-4" /> },
+    { label: t('sidebar.profile'), path: '/seller/profile', icon: <UserCheck className="w-4 h-4" /> },
   ];
 
   const recyclerNav = [
-    { label: 'Dashboard', path: '/recycler/dashboard', icon: <LayoutDashboard className="w-4 h-4" /> },
-    { label: 'Browse Lots', path: '/recycler/lots', icon: <Search className="w-4 h-4" /> },
-    { label: 'Accepted Lots', path: '/recycler/accepted-lots', icon: <CheckCircle2 className="w-4 h-4" /> },
-    { label: 'Pickups', path: '/recycler/pickups', icon: <Truck className="w-4 h-4" /> },
-    { label: 'Transactions', path: '/recycler/transactions', icon: <CreditCard className="w-4 h-4" /> },
-    { label: 'My Prices', path: '/recycler/prices', icon: <Tag className="w-4 h-4" /> },
-    { label: 'Notifications', path: '/recycler/notifications', icon: <Bell className="w-4 h-4" /> },
-    { label: 'Profile', path: '/recycler/profile', icon: <UserCheck className="w-4 h-4" /> },
+    { label: t('sidebar.dashboard'), path: '/recycler/dashboard', icon: <LayoutDashboard className="w-4 h-4" /> },
+    { label: t('sidebar.browseLots'), path: '/recycler/lots', icon: <Search className="w-4 h-4" /> },
+    { label: t('sidebar.acceptedLots'), path: '/recycler/accepted-lots', icon: <CheckCircle2 className="w-4 h-4" /> },
+    { label: t('sidebar.pickups'), path: '/recycler/pickups', icon: <Truck className="w-4 h-4" /> },
+    { label: t('sidebar.transactions'), path: '/recycler/transactions', icon: <CreditCard className="w-4 h-4" /> },
+    { label: t('sidebar.myPrices'), path: '/recycler/prices', icon: <Tag className="w-4 h-4" /> },
+    { label: t('sidebar.notifications'), path: '/recycler/notifications', icon: <Bell className="w-4 h-4" /> },
+    { label: t('sidebar.profile'), path: '/recycler/profile', icon: <UserCheck className="w-4 h-4" /> },
   ];
 
   const navItems = role === 'recycler' ? recyclerNav : sellerNav;
@@ -65,10 +67,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ onCloseMobile }) => {
           </div>
           <div className="flex flex-col">
             <span className="text-base font-extrabold tracking-tight text-gray-900">
-              Kabadiwala <span className="text-saffron-500">Connect</span>
+              {t('brand.name')} <span className="text-saffron-500">{t('brand.nameHighlight')}</span>
             </span>
             <span className="text-[10px] font-bold text-saffron-700/80 uppercase tracking-wider">
-              {role === 'recycler' ? 'Buyer Portal' : 'Collector Portal'}
+              {role === 'recycler' ? t('brand.buyerPortal') : t('brand.sellerPortal')}
             </span>
           </div>
         </div>
@@ -115,7 +117,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onCloseMobile }) => {
           className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-red-600 hover:bg-red-50 transition-colors tap-bounce"
         >
           <LogOut className="w-4 h-4 shrink-0" />
-          <span>Logout</span>
+          <span>{t('sidebar.logout')}</span>
         </button>
       </div>
     </aside>
