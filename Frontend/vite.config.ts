@@ -21,5 +21,11 @@ export default defineConfig({
       },
     },
   },
+  preview: {
+    host: true,
+    allowedHosts: [
+      'kabadiwala-connect-preview.onrender.com',
+      '.onrender.com',
+    ],
+  },
 });
-
