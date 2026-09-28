@@ -57,9 +57,9 @@ export const CreateLotPage: React.FC = () => {
 
   // 3-Step Flow: Photos & AI Scan -> Details -> Review & Submit
   const steps: StepItem[] = [
-    { number: 1, title: t('createLot.photosAndAiScan') || 'Photos & AI Scan' },
-    { number: 2, title: t('createLot.quantityAndLocation') || 'Quantity & Location' },
-    { number: 3, title: t('createLot.reviewAndSubmit') || 'Review & Submit' },
+    { number: 1, title: 'Photos & AI Scan' },
+    { number: 2, title: 'Quantity & Location' },
+    { number: 3, title: 'Review & Submit' },
   ];
 
   // Use Current Location GPS handler
