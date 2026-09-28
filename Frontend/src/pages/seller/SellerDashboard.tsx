@@ -47,9 +47,10 @@ export const SellerDashboard: React.FC = () => {
       setIsLoading(true);
       try {
         // 1. Fetch collector lots
+        let loadedLots: Lot[] = [];
         const lotsRes = await lotsApi.getCollectorLots({ page: 1, limit: 10 });
         if (isMounted && lotsRes.data) {
-          const loadedLots = lotsRes.data.lots || [];
+          loadedLots = lotsRes.data.lots || [];
           setLots(loadedLots);
           setTotalLotsCount(lotsRes.data.pagination?.totalItems || loadedLots.length);
 
@@ -62,14 +63,40 @@ export const SellerDashboard: React.FC = () => {
           setPendingCount(pending);
         }
 
-        // 2. Fetch collector transactions to sum up earnings
-        const txRes = await transactionsApi.getCollectorTransactions({ page: 1, limit: 50 });
-        if (isMounted && txRes.data) {
-          const txList = txRes.data.transactions || [];
-          const earnings = txList
-            .filter((t) => t.status === 'completed')
-            .reduce((sum, t) => sum + (t.amount || 0), 0);
-          setTotalEarnings(earnings);
+        // 2. Fetch collector transactions to sum up earnings from accepted/completed lots
+        let txEarnings = 0;
+        const txLotIds = new Set<string>();
+
+        try {
+          const txRes = await transactionsApi.getCollectorTransactions({ page: 1, limit: 50 });
+          if (isMounted && txRes.data) {
+            const txList = txRes.data.transactions || [];
+            // Include completed, initiated, and active transactions (excluding cancelled/failed)
+            const validTx = txList.filter(
+              (t) => t.status !== 'cancelled' && t.status !== 'failed'
+            );
+            txEarnings = validTx.reduce((sum, t) => sum + (t.amount || 0), 0);
+
+            validTx.forEach((t) => {
+              const lid = typeof t.lotId === 'object' && t.lotId ? (t.lotId as any)._id : t.lotId;
+              if (lid) txLotIds.add(String(lid));
+            });
+          }
+        } catch {
+          // transactions endpoint optional/offline
+        }
+
+        // Also include accepted, picked, or completed lots that do not already have a transaction
+        const acceptedLotsEarnings = loadedLots
+          .filter(
+            (l) =>
+              (l.status === 'accepted' || l.status === 'picked' || l.status === 'completed') &&
+              !txLotIds.has(String(l._id))
+          )
+          .reduce((sum, l) => sum + (l.finalPrice || l.estimatedPrice || 0), 0);
+
+        if (isMounted) {
+          setTotalEarnings(txEarnings + acceptedLotsEarnings);
         }
       } catch {
         // Fallback gracefully on local/offline error
