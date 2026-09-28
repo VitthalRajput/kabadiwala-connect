@@ -40,6 +40,6 @@ router.route("/:lotId")
     .delete(verifyJWT, deleteLot);
 
 router.route("/:lotId/accept")
-    .patch(verifyJWT, authorizeRoles(USER_ROLES.RECYCLER), acceptLot);
+    .patch(verifyJWT, acceptLot);
 
 export default router;
